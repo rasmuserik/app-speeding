@@ -8,9 +8,9 @@ Visualisation of speeding measurements.
 - vtekst for måned i dato
 - √hover-effect
 - √konkurrencepladser i bunden, ved hvilket vejarbejde overholdes hastighedsbegrænsningen bedst?
-- styling - bars/border between text
+- √styling - bars/border between text
 - IE8 support
-- frame
+- √frame
 
 
 ## Configuration
@@ -111,7 +111,7 @@ Create an place label for each set of bars
     addTitle = ($root, title, x, y) ->
         date = new Date(title.slice(0, -3))
         text = title.slice(-2) + ":00"
-        text = text + " " + danishDate(+date - 24*60*60*1000) if text is "23:00"
+        text = text + " " + danishDate +date if text is "23:00"
         text = text + " " + danishDate +date if y is 0
         $label = ($ '<div class="label">').text(text)
         $label.css

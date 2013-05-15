@@ -102,7 +102,7 @@
     date = new Date(title.slice(0, -3));
     text = title.slice(-2) + ":00";
     if (text === "23:00") {
-      text = text + " " + danishDate(+date - 24 * 60 * 60 * 1000);
+      text = text + " " + danishDate(+date);
     }
     if (y === 0) {
       text = text + " " + danishDate(+date);

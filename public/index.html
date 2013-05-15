@@ -2,19 +2,17 @@
 <html>
     <head>
         <title>Vores Fart</title>
-        <script src="/jquery-1.9.1.js"></script>
-        <script src="/main.js"></script>
-         <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
     </head>
 
     <body>
         <div id="introText">
             <table border=0 bordercolor="none" width="820" cellpadding="5" cellspacing="0">
                 <tr>
-                    <td id="separated" width="33%">
+                    <td class="separated" width="33%">
                         Her ser du trafikanternes fart ved de tre vejarbejder p&#229; <a href="">Motorring 4</a>, <a href="">Kolding V</a> og <a href="">Vilsundbroen</a> de sidste 24 timer. 
                     </td>
-                    <td id="separated" width="33%">
+                    <td class="separated" width="33%">
                         Hold musen over infografikken for at f&#229; mere information.
                         <span id="correct">overholdt&nbsp;fartgr&#230;nse </span><br> 
                         <span id="wrong">ikke overholdt&nbsp;fartgr&#230;nse </span>
@@ -25,15 +23,7 @@
                 </tr>
             </table>
         </div>
-        <div id="visualisation">
-        </div>
-        <div id="score">
-        </div>
-        <script>$(function(){visSpeed({
-            webservice: "/webservice",
-            visualisationElem: "#visualisation",
-            scoreElem: "#score",
-        })})</script>
+        <iframe src="iframe.html" width=830 height=1000 class="frame"></iframe>
         <script>document.write('<script src="http://solsort.com/_logger.js"></s'+'cript>');</script>
     </body>
 </html>

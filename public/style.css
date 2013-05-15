@@ -1,10 +1,13 @@
 body {
   font: 14px Arial, sans-serif;
 }
+.frame {
+  margin: 20px;
+  border: none;
+  border-top: 2px solid #eee;
+}
 #visualisation {
   position: relative;
-  margin-top: 2em;
-  margin-left: 2em;
 }
 #correct {
   background: #0092b6;
@@ -17,6 +20,9 @@ body {
   color: #fff;
   margin: 1px;
   padding: -1px;
+}
+.separated {
+  border-right: 2px solid #eee;
 }
 .label {
   position: absolute;
@@ -57,10 +63,13 @@ body {
 .offenders:hover {
   background: #ffa800;
 }
+#score {
+  margin-left: 30px;
+}
 .scoreInfo {
   display: inline-block;
   font-size: 28px;
-  margin-left: 60px;
+  margin-left: 40px;
   font-weight: bold;
 }
 .scoreTitle {
