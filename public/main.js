@@ -38,9 +38,11 @@
   };
 
   visualiseScore = function($score, data) {
-    var id, key, name, offenders, rank, _results;
+    var i, id, key, name, offenders, rank, _i, _len, _ref, _results;
     offenders = data.offenders;
-    rank = ((function() {
+    rank = {};
+    i = 0;
+    _ref = ((function() {
       var _results;
       _results = [];
       for (key in unitIds) {
@@ -50,10 +52,14 @@
     })()).sort(function(a, b) {
       return offenders[a] - offenders[b];
     });
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      id = _ref[_i];
+      rank[id] = ++i;
+    }
     _results = [];
     for (id in unitIds) {
       name = unitIds[id];
-      _results.push($score.append($("<div class=\"scoreInfo\"> " + (1 + rank.indexOf(id)) + ".\n<div class=\"scoreBlock\"><div class=\"scoreTitle\"> " + name + " </div>\n<div class=\"scoreBar\"><div class=\"scoreBarOk\" style=\"width: " + (100 - 100 * offenders[id]) + "%\">\n<span class=\"scoreBarText\">" + (Math.round(10000 * (1 - offenders[id])) / 100) + "%</span>\n</div></div></div></div>")));
+      _results.push($score.append($("<div class=\"scoreInfo\"> " + rank[id] + ".\n<div class=\"scoreBlock\"><div class=\"scoreTitle\"> " + name + " </div>\n<div class=\"scoreBar\"><div class=\"scoreBarOk\" style=\"width: " + (100 - 100 * offenders[id]) + "%\">\n<span class=\"scoreBarText\">" + (Math.round(10000 * (1 - offenders[id])) / 100) + "%</span>\n</div></div></div></div>")));
     }
     return _results;
   };
@@ -100,6 +106,7 @@
   addTitle = function($root, title, x, y) {
     var $label, date, text;
     date = new Date(title.slice(0, -3));
+    date = new Date(+title.slice(0, 4), +title.slice(5, 7), +title.slice(8, 10));
     text = title.slice(-2) + ":00";
     if (text === "23:00") {
       text = text + " " + danishDate(+date);

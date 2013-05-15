@@ -9,7 +9,7 @@ Visualisation of speeding measurements.
 - √hover-effect
 - √konkurrencepladser i bunden, ved hvilket vejarbejde overholdes hastighedsbegrænsningen bedst?
 - √styling - bars/border between text
-- IE8 support
+- √IE8 support
 - √frame
 
 
@@ -62,10 +62,14 @@ Get the data, and visualise it :)
 
     visualiseScore = ($score, data) ->
         offenders = data.offenders
-        rank = (key for key of unitIds).sort (a,b)->offenders[a]-offenders[b]
+        rank = {}
+        i = 0
+        for id in ((key for key of unitIds).sort (a,b)->offenders[a]-offenders[b])
+            rank[id] = ++i
+
         for id, name of unitIds
             $score.append $ """
-            <div class="scoreInfo"> #{1 + rank.indexOf id}.
+            <div class="scoreInfo"> #{rank[id]}.
             <div class="scoreBlock"><div class="scoreTitle"> #{name} </div>
             <div class="scoreBar"><div class="scoreBarOk" style="width: #{100-100*offenders[id]}%">
             <span class="scoreBarText">#{Math.round(10000* (1-offenders[id]))/100}%</span>
@@ -110,6 +114,7 @@ Create an place label for each set of bars
 
     addTitle = ($root, title, x, y) ->
         date = new Date(title.slice(0, -3))
+        date = new Date +title.slice(0,4), +title.slice(5,7), +title.slice(8,10)
         text = title.slice(-2) + ":00"
         text = text + " " + danishDate +date if text is "23:00"
         text = text + " " + danishDate +date if y is 0
