@@ -4,10 +4,9 @@ Visualisation of speeding measurements.
 
 ## Todo
 
-- find ud af de præcise detaljer hvilket gennemsnit etc. der skal bruges, ie. er der outliers der skal prunes, eller lignende?
-- tooltip over bars
+- √tooltip over bars
 - tekst for måned i dato
-- hover-effect
+- √hover-effect
 - konkurrencepladser i bunden, ved hvilket vejarbejde overholdes hastighedsbegrænsningen bedst?
 - styling
 - flytte backenden over i php, - send mail med spec til arni
@@ -41,25 +40,8 @@ Visualisation parameters, telling where on the screen the dynamic elements are p
     barSpacing = 220
     lineHeight = 16
 
-## Utility
-
-Utility function formatting a date in danish, this is used for making the data url
-
-    danishDate = (date) ->
-        "#{date.getDate()}/#{date.getMonth()+1}-#{date.getFullYear()}"
-
-Constant for readability of code
-
-    millisecondsPerHour = 60*60*1000
-    millisecondsPerDay = 24*millisecondsPerHour
-
-Utility for finding the average
-
-    avg = (list) -> list.reduce(((a,b)->a+b), 0) / list.length
 
 ## Visualisation
-
-### Meteor code
 
 `getData` could be replaced with a function that get the data from a webservice, instead of doing an RPC. Ie. via `$.ajax(..)` or similar.
 
@@ -92,7 +74,6 @@ Find the label/indexed of the data, sorted descending.
             for datahour of data[id]
                 datehours[datahour] = true
         datehours = (key for key of datehours).sort().reverse()
-        console.log data, datehours
 
 Run through the data and unitIds, and draw bars. Keep track of coordinates, and place absolutely.
 
@@ -101,10 +82,14 @@ Run through the data and unitIds, and draw bars. Keep track of coordinates, and 
             addTitle $visualisation, datehour, 0, y
             x = barX
             for id of unitIds
-                console.log data[id][datehour]
                 addBar $visualisation, data[id][datehour], x, y
                 x += barSpacing
             y += lineHeight
+
+Add popup
+
+        $hover = $ '<div class="hoverInfo">'
+        $visualisation.append $hover
 
 Create an place label for each set of bars
 
@@ -123,8 +108,6 @@ The bar contains of three parts, a blue box, an orange box, and a line annotatin
 Create those elements for the and add them to the root element
 
     addBar = ($root, item, x, y) ->
-        console.log item
-
         $blueBox = $ '<div class="bar ok">'
         $blueBox.css
             left: x + item.offenders * barWidth
@@ -148,15 +131,39 @@ Create those elements for the and add them to the root element
         addHover $root, item, [$blueBox, $orangeBox, $avgLine]
 
     hoverDepth = 0;
-    showHover = (item) ->
-        console.log "showhover"
-    hideHover = (item) ->
-        console.log "hidehover"
+
+    currentData = undefined
+    $currentElem = undefined
+
+    showHover = (e, item) ->
+        $currentElem.off "mousemove", hoverMove if $currentElem 
+        $currentElem = $ e.currentTarget
+        $currentElem.on "mousemove", hoverMove
+        currentData = item
+        ($ ".hoverInfo")
+            .html("Gennemsnitshastighed: #{Math.round(item.avgSpeed)}km/t<br>#{Math.round(100*(1-item.offenders))}% overholdt fartgrænsen")
+            .css
+                display: "block"
+                top: 0
+                left: 0
+        hoverMove e
+
+    hideHover = (e, item) ->
+        $currentElem.off "mousemove", hoverMove if $currentElem 
+        $currentElem = undefined
+        ($ ".hoverInfo").css "display", "none"
+
+    hoverMove = (e) ->
+        $hover = ($ ".hoverInfo")
+        $hover.offset
+            top: e.clientY - $hover.height() / 2 + ($ "body").scrollTop()
+            left: e.clientX - $hover.width() - 10 + ($ "body").scrollLeft()
+
 
     addHover = ($root, item, elems) ->
         for $elem in elems
-            $elem.on "mouseover", -> showHover(item)
-            $elem.on "mouseout", -> hideHover(item)
+            $elem.on "mouseover", (e) -> showHover(e, item)
+            $elem.on "mouseout", (e) -> hideHover(e, item)
 
 
 
