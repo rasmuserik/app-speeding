@@ -1,4 +1,4 @@
-# "Vores fart" (danish for "our speed")
+# ![logo](https://solsort.com/_logo.png) "Vores fart" (danish for "our speed")
 
 Visualisation of speeding measurements.
 
@@ -59,12 +59,11 @@ Utility for finding the average
 
 ## Server
 
-This may be rewritten in php. 
-
-We hourly get the data from the server, and agregate it into averages and numbers of offenders.
-
-
     if Meteor.isServer 
+
+Serverside method that returns statistics for the last 24 hours. Result is just a json object of objects of objects, accessible like `obj[unitId][datehour].property`, wher unitId is an key as defined above (ie. 37 for "Moterring 4"), datehour is a string containing the date and hour, and property may be `avgSpeed`, `offenders` etc.
+
+Currently implemented as a Meteor RPC-call, but could just be http server returning the result based on current time.
 
 Current speeding statistics cached for performance, - this is recalculated every hour.
 
