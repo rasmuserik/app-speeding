@@ -2,16 +2,8 @@
 
 Visualisation of speeding measurements.
 
-## Todo
-
-- √tooltip over bars
-- vtekst for måned i dato
-- √hover-effect
-- √konkurrencepladser i bunden, ved hvilket vejarbejde overholdes hastighedsbegrænsningen bedst?
-- √styling - bars/border between text
-- √IE8 support
-- √frame
-
+Code lies within the `public`-directory. 
+To compile, use the `coffee`/`stylus` command to compile from coffescript/stylus to javascript/css. Both commands can be installed by `npm install -g ...`.
 
 ## Configuration
 
