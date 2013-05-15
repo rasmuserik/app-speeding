@@ -1,0 +1,49 @@
+body {
+  font: 14px Arial, sans-serif;
+}
+#visualisation {
+  position: relative;
+  margin-top: 2em;
+  margin-left: 2em;
+}
+#correct {
+  background: #0092b6;
+  color: #fff;
+  margin: 1px;
+  padding: -1px;
+}
+#wrong {
+  background: #f28c00;
+  color: #fff;
+  margin: 1px;
+  padding: -1px;
+}
+.label {
+  position: absolute;
+  font: 10px arial, sans-serif;
+  background: #888;
+  color: #fff;
+  padding: 1px;
+  border-radius: 2px;
+}
+.bar {
+  height: 8px;
+  position: absolute;
+  background: #0092b6;
+}
+.bar:hover {
+  background: #00afda;
+}
+.speedLine {
+  margin-top: -3px;
+  position: absolute;
+  height: 10px;
+  width: 2px;
+  background: #000;
+}
+.offenders {
+  background: #f28c00;
+}
+.offenders:hover {
+  background: #ffa800;
+}
