@@ -2,6 +2,17 @@
 
 Visualisation of speeding measurements.
 
+Todo
+
+- find ud af de præcise detaljer hvilket gennemsnit etc. der skal bruges, ie. er der outliers der skal prunes, eller lignende?
+- tooltip over bars
+- tekst for måned i dato
+- hover-effect
+- konkurrencepladser i bunden, ved hvilket vejarbejde overholdes hastighedsbegrænsningen bedst?
+- styling
+- flytte backenden over i php
+
+
 ## Configuration
 
 Speed limit
