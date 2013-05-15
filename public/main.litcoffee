@@ -5,14 +5,12 @@ Visualisation of speeding measurements.
 ## Todo
 
 - √tooltip over bars
-- tekst for måned i dato
+- vtekst for måned i dato
 - √hover-effect
-- konkurrencepladser i bunden, ved hvilket vejarbejde overholdes hastighedsbegrænsningen bedst?
-- styling
-- flytte backenden over i php, - send mail med spec til arni
-- typen der sendes med til webserviceUrl'en skal sikres at være den rigtige. Forøjeblikket sendes typen 0.
-- ie. support
-- extract such that it is easy to integrate
+- √konkurrencepladser i bunden, ved hvilket vejarbejde overholdes hastighedsbegrænsningen bedst?
+- styling - bars/border between text
+- IE8 support
+- frame
 
 
 ## Configuration
@@ -63,7 +61,16 @@ Get the data, and visualise it :)
 ### Actual visualisation code
 
     visualiseScore = ($score, data) ->
-        undefined 
+        offenders = data.offenders
+        rank = (key for key of unitIds).sort (a,b)->offenders[a]-offenders[b]
+        for id, name of unitIds
+            $score.append $ """
+            <div class="scoreInfo"> #{1 + rank.indexOf id}.
+            <div class="scoreBlock"><div class="scoreTitle"> #{name} </div>
+            <div class="scoreBar"><div class="scoreBarOk" style="width: #{100-100*offenders[id]}%">
+            <span class="scoreBarText">#{Math.round(10000* (1-offenders[id]))/100}%</span>
+            </div></div></div></div>
+            """
 
     visualiseBars = ($visualisation, data) ->
  
@@ -85,19 +92,27 @@ Run through the data and unitIds, and draw bars. Keep track of coordinates, and 
                 addBar $visualisation, data[id][datehour], x, y
                 x += barSpacing
             y += lineHeight
+        $visualisation.css "height", y
 
 Add popup
 
         $hover = $ '<div class="hoverInfo">'
         $visualisation.append $hover
 
+Utility for writing the month:
+
+    danishDate = (date) ->
+        months = ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"] 
+        date = new Date(date)
+        date.getDate() + ". " + months[date.getMonth()]
+
 Create an place label for each set of bars
 
     addTitle = ($root, title, x, y) ->
+        date = new Date(title.slice(0, -3))
         text = title.slice(-2) + ":00"
-        date = " " + title.slice(5, -3)
-        text = text + date if y is 0
-        text = text + date if text is "23:00"
+        text = text + " " + danishDate(+date - 24*60*60*1000) if text is "23:00"
+        text = text + " " + danishDate +date if y is 0
         $label = ($ '<div class="label">').text(text)
         $label.css
             left: x
@@ -141,7 +156,7 @@ Create those elements for the and add them to the root element
         $currentElem.on "mousemove", hoverMove
         currentData = item
         ($ ".hoverInfo")
-            .html("Gennemsnitshastighed: #{Math.round(item.avgSpeed)}km/t<br>#{Math.round(100*(1-item.offenders))}% overholdt fartgrænsen")
+            .html("Gennemsnitsfart: #{Math.round(item.avgSpeed)}km/t <br>#{Math.round(100*(1-item.offenders))}% overholdt grænsen")
             .css
                 display: "block"
                 top: 0
@@ -164,6 +179,3 @@ Create those elements for the and add them to the root element
         for $elem in elems
             $elem.on "mouseover", (e) -> showHover(e, item)
             $elem.on "mouseout", (e) -> hideHover(e, item)
-
-
-

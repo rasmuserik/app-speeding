@@ -24,6 +24,7 @@ body {
   background: #888;
   color: #fff;
   padding: 1px;
+  padding-right: 5px;
   border-radius: 2px;
 }
 .bar {
@@ -40,7 +41,6 @@ body {
   background: #333;
   color: #fff;
   padding: 2px;
-  margin: -4px;
   border-radius: 2px;
   display: none;
 }
@@ -56,4 +56,36 @@ body {
 }
 .offenders:hover {
   background: #ffa800;
+}
+.scoreInfo {
+  display: inline-block;
+  font-size: 28px;
+  margin-left: 60px;
+  font-weight: bold;
+}
+.scoreTitle {
+  margin: 10px 0px 0px 0px;
+  font-size: 14px;
+  display: block;
+}
+.scoreBlock {
+  display: inline-block;
+}
+.scoreBar {
+  font-size: 14px;
+  display: inline-block;
+  background: #f28c00;
+  width: 180px;
+  height: 30px;
+}
+.scoreBarOk {
+  display: inline-block;
+  color: #fff;
+  background: #0092b6;
+  height: 30px;
+}
+.scoreBarText {
+  display: inline-block;
+  height: 20px;
+  margin: 8px 0px 2px 5px;
 }
