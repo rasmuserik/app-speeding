@@ -2,7 +2,7 @@
 
 Visualisation of speeding measurements.
 
-Todo
+## Todo
 
 - find ud af de præcise detaljer hvilket gennemsnit etc. der skal bruges, ie. er der outliers der skal prunes, eller lignende?
 - tooltip over bars
@@ -10,7 +10,10 @@ Todo
 - hover-effect
 - konkurrencepladser i bunden, ved hvilket vejarbejde overholdes hastighedsbegrænsningen bedst?
 - styling
-- flytte backenden over i php
+- flytte backenden over i php, - send mail med spec til arni
+- typen der sendes med til webserviceUrl'en skal sikres at være den rigtige. Forøjeblikket sendes typen 0.
+- ie. support
+- extract such that it is easy to integrate
 
 
 ## Configuration
@@ -41,22 +44,6 @@ Visualisation parameters, telling where on the screen the dynamic elements are p
     barSpacing = 220
     lineHeight = 16
 
-## Utility
-
-Utility function formatting a date in danish, this is used for making the data url
-
-    danishDate = (date) ->
-        "#{date.getDate()}/#{date.getMonth()+1}-#{date.getFullYear()}"
-
-Constant for readability of code
-
-    millisecondsPerHour = 60*60*1000
-    millisecondsPerDay = 24*millisecondsPerHour
-
-Utility for finding the average
-
-    avg = (list) -> list.reduce(((a,b)->a+b), 0) / list.length
-
 ## Server
 
     if Meteor.isServer 
@@ -84,14 +71,14 @@ The stat is split up according to different unit ids
 
             result = {}
             for id, name of unitIds
-                # TODO: real type instead of zero
 
 where we just get data from the web service and process the result.
 
-                data = Meteor.http.get webserviceUrl(id, new Date(startTime), new Date(endTime), 0)
+                data = Meteor.http.get webserviceUrl(id, new Date(startTime), new Date(endTime), 0) # see TODO above
                 result[id] = processData(id, line.split "\t" for line in (data.content.split "\r\n").slice(1) if data.content)
 
             speedingStat = result
+            console.log result
             console.log "updated speeding stat"
 
 Processing the data 
@@ -215,3 +202,35 @@ Create those elements for the and add them to the root element
                 left: x + item.avgSpeed / speedLimit * barWidth
                 top: y + barY
             $root.append $avgLine
+
+            addHover $root, item, [$blueBox, $orangeBox, $avgLine]
+
+        hoverDepth = 0;
+        showHover = (item) ->
+            console.log "showhover"
+        hideHover = (item) ->
+            console.log "hidehover"
+
+        addHover = ($root, item, elems) ->
+            for $elem in elems
+                $elem.on "mouseover", -> showHover(item)
+                $elem.on "mouseout", -> hideHover(item)
+
+
+
+## Utility
+
+Utility function formatting a date in danish, this is used for making the data url
+
+    danishDate = (date) ->
+        "#{date.getDate()}/#{date.getMonth()+1}-#{date.getFullYear()}"
+
+Constant for readability of code
+
+    millisecondsPerHour = 60*60*1000
+    millisecondsPerDay = 24*millisecondsPerHour
+
+Utility for finding the average
+
+    avg = (list) -> list.reduce(((a,b)->a+b), 0) / list.length
+
