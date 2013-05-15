@@ -1,1 +1,1 @@
-main.litcoffee
+public/main.litcoffee
