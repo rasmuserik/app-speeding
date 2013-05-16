@@ -86,7 +86,9 @@
       addTitle($visualisation, datehour, 0, y);
       x = barX;
       for (id in unitIds) {
-        addBar($visualisation, data[id][datehour], x, y);
+        if (data[id][datehour]) {
+          addBar($visualisation, data[id][datehour], x, y);
+        }
         x += barSpacing;
       }
       y += lineHeight;
@@ -100,7 +102,7 @@
     var months;
     months = ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"];
     date = new Date(date);
-    return date.getDate() + ". " + months[date.getMonth()];
+    return date.getDate() + ". " + months[date.getMonth() - 1];
   };
 
   addTitle = function($root, title, x, y) {

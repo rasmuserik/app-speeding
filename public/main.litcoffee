@@ -85,7 +85,7 @@ Run through the data and unitIds, and draw bars. Keep track of coordinates, and 
             addTitle $visualisation, datehour, 0, y
             x = barX
             for id of unitIds
-                addBar $visualisation, data[id][datehour], x, y
+                addBar $visualisation, data[id][datehour], x, y if data[id][datehour]
                 x += barSpacing
             y += lineHeight
         $visualisation.css "height", y
@@ -100,7 +100,7 @@ Utility for writing the month:
     danishDate = (date) ->
         months = ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"] 
         date = new Date(date)
-        date.getDate() + ". " + months[date.getMonth()]
+        date.getDate() + ". " + months[date.getMonth() - 1]
 
 Create an place label for each set of bars
 
